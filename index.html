@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflip - Upload Film</title>
+    <title>Netflip - Watch Film</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,89 +21,40 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
+            max-width: 800px;
             width: 100%;
+            text-align: center;
         }
         h1 {
             color: #e50914;
-            text-align: center;
             margin-bottom: 20px;
         }
-        label {
+        video {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        a {
             color: #e50914;
-            display: block;
-            margin-bottom: 10px;
+            text-decoration: none;
             font-size: 1.2em;
         }
-        input[type="text"], input[type="file"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: #ffffff;
-            font-size: 1em;
-        }
-        textarea {
-            resize: vertical;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #e50914;
-            color: #ffffff;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #d40813;
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Upload Film to Netflip</h1>
-        <form id="uploadForm">
-            <label for="title">Film Title:</label>
-            <input type="text" id="title" name="title" required>
-
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" rows="5" required></textarea>
-
-            <label for="video-file">Choose Video:</label>
-            <input type="file" id="video-file" name="video-file" accept="video/mp4, video/webm, video/ogg" required>
-
-            <label for="cover-file">Choose Cover Image:</label>
-            <input type="file" id="cover-file" name="cover-file" accept="image/*" required>
-
-            <button type="submit">Send to Netflip</button>
-        </form>
+        <h1>Watch Film</h1>
+        <video controls>
+            <source src="YOUR_VIDEO_LINK" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p><a href="YOUR_VIDEO_LINK" target="_blank">Download this video</a></p>
     </div>
-
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
-            const videoFile = document.getElementById('video-file').files[0];
-            const coverFile = document.getElementById('cover-file').files[0];
-            
-            // Підготовка даних для електронного листа
-            const email = 'stasikgnidan@gmail.com';
-            const subject = `New Film Submission: ${title}`;
-            const body = `Title: ${title}\nDescription: ${description}\n\nPlease find the attached files for the video and cover image.`;
-
-            // Формування посилання mailto для відправки електронного листа
-            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-
-            alert('Фільм успішно відправлений на Netflip!');
-        });
-    </script>
 </body>
 </html>
