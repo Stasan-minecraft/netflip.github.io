@@ -1,99 +1,52 @@
-// Реєстрація користувача
-document.getElementById('registerForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
+// Функція для перевірки, чи користувач увійшов у систему
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Перевірка, чи користувач вже існує
-    const existingUser = users.find(user => user.username === username);
-    if (existingUser) {
-        alert('Username already exists!');
-        return;
-    }
-
-    const user = {
-        username: username,
-        email: email,
-        password: password
-    };
-
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    alert('Registration successful!');
-    window.location.href = 'https://stasan-minecraft.github.io/netflip.github.io/login.html';
-});
-
-// Вхід користувача
-document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-
-    const user = users.find(user => user.username === username && user.password === password);
-
-    if (user) {
-        alert('Login successful!');
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'https://stasan-minecraft.github.io/netflip.github.io/profile.html';
+    if (currentUser) {
+        document.getElementById('profileLink').style.display = 'inline';
+        document.getElementById('loginLink').style.display = 'none';
+        document.getElementById('registerLink').style.display = 'none';
+        document.getElementById('logout').style.display = 'inline';
     } else {
-        alert('Invalid username or password!');
+        document.getElementById('profileLink').style.display = 'none';
+        document.getElementById('loginLink').style.display = 'inline';
+        document.getElementById('registerLink').style.display = 'inline';
+        document.getElementById('logout').style.display = 'none';
     }
-});
+}
 
-// Відображення профілю користувача
+// Виклик функції перевірки статусу входу при завантаженні сторінки
 window.onload = function() {
+    checkLoginStatus();
+
+    // Якщо на сторінці профілю або завантаження відео
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
         document.getElementById('username')?.textContent = currentUser.username;
+
+        // Відображення відео користувача (якщо є)
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+        const userVideos = videos.filter(video => video.uploader === currentUser.username);
+
+        const videoList = document.createElement('ul');
+        userVideos.forEach(video => {
+            const videoItem = document.createElement('li');
+            videoItem.innerHTML = `
+                <h3>${video.title}</h3>
+                <p>${video.description}</p>
+                <video width="320" height="240" controls>
+                    <source src="${video.videoDataUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>Uploaded on: ${video.uploadDate}</p>
+            `;
+            videoList.appendChild(videoItem);
+        });
+
+        document.getElementById('profile')?.appendChild(videoList);
     } else if (window.location.pathname.includes('profile.html') || window.location.pathname.includes('upload_video.html')) {
         window.location.href = 'https://stasan-minecraft.github.io/netflip.github.io/login.html';
     }
-};
-
-// Завантаження відео
-document.getElementById('uploadForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const videoFile = document.getElementById('video-file').files[0];
-
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) {
-        alert('You need to log in to upload a video.');
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = function() {
-        const videoDataUrl = reader.result;
-
-        let videos = JSON.parse(localStorage.getItem('videos')) || [];
-
-        const video = {
-            title: title,
-            description: description,
-            videoDataUrl: videoDataUrl,
-            uploader: currentUser.username,
-            uploadDate: new Date().toLocaleString()
-        };
-
-        videos.push(video);
-        localStorage.setItem('videos', JSON.stringify(videos));
-
-        alert('Video uploaded successfully!');
-        window.location.href = 'https://stasan-minecraft.github.io/netflip.github.io/profile.html';
-    };
-
-    reader.readAsDataURL(videoFile);
 };
 
 // Вихід з системи
