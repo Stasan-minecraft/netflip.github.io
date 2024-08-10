@@ -1,58 +1,69 @@
-// Реєстрація користувача
-document.getElementById('registerForm')?.addEventListener('submit', function(event) {
+// Залишаємо попередні функції реєстрації, входу та виходу
+
+// Завантаження відео
+document.getElementById('uploadForm')?.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const videoFile = document.getElementById('video-file').files[0];
 
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Перевірка, чи користувач вже існує
-    const existingUser = users.find(user => user.username === username);
-    if (existingUser) {
-        alert('Username already exists!');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        alert('You need to log in to upload a video.');
         return;
     }
 
-    const user = {
-        username: username,
-        email: email,
-        password: password
+    // Зчитуємо файл відео як Data URL
+    const reader = new FileReader();
+    reader.onloadend = function() {
+        const videoDataUrl = reader.result;
+
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+
+        const video = {
+            title: title,
+            description: description,
+            videoDataUrl: videoDataUrl,
+            uploader: currentUser.username,
+            uploadDate: new Date().toLocaleString()
+        };
+
+        videos.push(video);
+        localStorage.setItem('videos', JSON.stringify(videos));
+
+        alert('Video uploaded successfully!');
+        window.location.href = 'profile.html';
     };
 
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    alert('Registration successful!');
-    window.location.href = 'login.html';
+    reader.readAsDataURL(videoFile);
 });
 
-// Вхід користувача
-document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-
-    const user = users.find(user => user.username === username && user.password === password);
-
-    if (user) {
-        alert('Login successful!');
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'profile.html';
-    } else {
-        alert('Invalid username or password!');
-    }
-});
-
-// Відображення профілю користувача
+// Відображення відео в профілі
 window.onload = function() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
         document.getElementById('username')?.textContent = currentUser.username;
+
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+        const userVideos = videos.filter(video => video.uploader === currentUser.username);
+
+        const videoList = document.createElement('ul');
+        userVideos.forEach(video => {
+            const videoItem = document.createElement('li');
+            videoItem.innerHTML = `
+                <h3>${video.title}</h3>
+                <p>${video.description}</p>
+                <video width="320" height="240" controls>
+                    <source src="${video.videoDataUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>Uploaded on: ${video.uploadDate}</p>
+            `;
+            videoList.appendChild(videoItem);
+        });
+
+        document.getElementById('profile')?.appendChild(videoList);
     } else if (window.location.pathname.includes('profile.html') || window.location.pathname.includes('upload_video.html')) {
         window.location.href = 'login.html';
     }
