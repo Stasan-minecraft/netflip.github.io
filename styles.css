@@ -35,7 +35,47 @@ main {
     color: #e50914;
 }
 
+.video-cover {
+    width: 320px;
+    height: 180px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
 video {
     display: block;
     margin-top: 10px;
+}
+
+#update-section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 5px;
+}
+
+#updateForm label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#updateForm input, #updateForm textarea, #updateForm button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #333;
+    border: 1px solid #555;
+    color: white;
+    border-radius: 5px;
+}
+
+#updateForm button {
+    background-color: #e50914;
+    border: none;
+    cursor: pointer;
+}
+
+#updateForm button:hover {
+    background-color: #f40612;
 }
