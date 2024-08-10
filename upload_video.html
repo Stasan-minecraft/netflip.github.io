@@ -13,14 +13,14 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="profile.html">Profile</a></li>
-                <li><a href="logout.php">Logout</a></li>
+                <li><a href="#" id="logout">Logout</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <section id="upload-video">
             <h2>Upload New Video</h2>
-            <form action="upload_video.php" method="POST" enctype="multipart/form-data">
+            <form id="uploadForm">
                 <label for="title">Video Title:</label>
                 <input type="text" id="title" name="title" required>
                 
@@ -28,11 +28,12 @@
                 <textarea id="description" name="description" required></textarea>
                 
                 <label for="video-file">Choose Video:</label>
-                <input type="file" id="video-file" name="video-file" required>
+                <input type="file" id="video-file" name="video-file" accept="video/*" required>
                 
                 <button type="submit">Upload</button>
             </form>
         </section>
     </main>
+    <script src="scripts.js"></script>
 </body>
 </html>
