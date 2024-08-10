@@ -14,6 +14,25 @@
         <section id="video-list">
             <!-- Відео будуть згенеровані тут -->
         </section>
+
+        <section id="update-section">
+            <h2>Update Film</h2>
+            <form id="updateForm">
+                <label for="title">Video Title:</label>
+                <input type="text" id="title" name="title" required>
+                
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+                
+                <label for="video-file">Choose Video:</label>
+                <input type="file" id="video-file" name="video-file" accept="video/mp4, video/webm, video/ogg">
+                
+                <label for="cover-file">Choose Cover Image:</label>
+                <input type="file" id="cover-file" name="cover-file" accept="image/*">
+                
+                <button type="submit">Update Film</button>
+            </form>
+        </section>
     </main>
     <script src="scripts.js"></script>
 </body>
