@@ -7,8 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5; /* Світлий фон */
-            color: #333333; /* Темний текст */
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,7 +15,6 @@
             height: 100vh;
         }
         .container {
-            background-color: #ffffff; /* Білий фон контейнера */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -26,12 +23,10 @@
             text-align: center;
         }
         h1 {
-            color: #e50914; /* Червоний заголовок */
             text-align: center;
             margin-bottom: 20px;
         }
         label {
-            color: #333333; /* Темний текст мітки */
             display: block;
             margin-bottom: 10px;
             font-size: 1.2em;
@@ -40,10 +35,8 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
-            border: 1px solid #cccccc; /* Світло-сіра рамка */
+            border: 1px solid #cccccc;
             border-radius: 5px;
-            background-color: #ffffff; /* Білий фон полів */
-            color: #333333; /* Темний текст у полях */
             font-size: 1em;
         }
         textarea {
@@ -54,33 +47,67 @@
             padding: 15px;
             border: none;
             border-radius: 5px;
-            background-color: #e50914; /* Червона кнопка */
-            color: #ffffff; /* Білий текст на кнопці */
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #d40813;
         }
         .video-button {
             margin-bottom: 20px;
-            background-color: #e50914; /* Червона кнопка */
-            color: #ffffff; /* Білий текст на кнопці */
-            font-size: 1.2em;
             padding: 15px;
-            border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 1.2em;
         }
-        .video-button:hover {
+        .theme-toggle {
+            margin-bottom: 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            font-size: 1em;
+            color: inherit;
+        }
+
+        /* Світла тема */
+        .light-theme {
+            background-color: #f5f5f5;
+            color: #333333;
+        }
+        .light-theme .container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .light-theme button, .light-theme .video-button {
+            background-color: #e50914;
+            color: #ffffff;
+        }
+        .light-theme button:hover, .light-theme .video-button:hover {
+            background-color: #d40813;
+        }
+
+        /* Темна тема */
+        .dark-theme {
+            background-color: #141414;
+            color: #ffffff;
+        }
+        .dark-theme .container {
+            background-color: #1a1a1a;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .dark-theme button, .dark-theme .video-button {
+            background-color: #e50914;
+            color: #ffffff;
+        }
+        .dark-theme button:hover, .dark-theme .video-button:hover {
             background-color: #d40813;
         }
     </style>
 </head>
-<body>
+<body class="light-theme">
     <div class="container">
+        <!-- Перемикач теми -->
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
         <!-- Кнопка для відео -->
         <button class="video-button" onclick="window.location.href='file:///C:/Users/%D0%A1%D1%82%D0%B0%D0%BD%D1%96%D1%81%D0%BB%D0%B0%D0%B2%20%D0%93%D0%BD%D1%96%D0%B4%D0%B0%D0%BD/Downloads/BRICKLAND_1_SESON%2022.mp4'">
             BRICKLAND 1 SESON
@@ -105,6 +132,11 @@
     </div>
 
     <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            document.body.classList.toggle('dark-theme');
+        }
+
         document.getElementById('uploadForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
@@ -112,12 +144,10 @@
             const description = document.getElementById('description').value;
             const videoLink = document.getElementById('video-link').value;
             
-            // Підготовка даних для електронного листа
             const email = 'stasikgnidan@gmail.com';
             const subject = `New Film Submission: ${title}`;
             const body = `Title: ${title}\nDescription: ${description}\n\nFilm Link:\n${videoLink}\n\nPlease review the film at the provided link.`;
 
-            // Формування посилання mailto для відправки електронного листа
             const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             window.location.href = mailtoLink;
 
